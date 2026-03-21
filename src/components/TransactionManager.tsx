@@ -19,6 +19,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import FilterModal from './FilterModal';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,13 +35,8 @@ interface TransactionManagerProps {
 const TransactionManager: React.FC<TransactionManagerProps> = ({ userId, role, initialTransactions = [], onSeed }) => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    startDate: '',
-    endDate: '',
-    status: '' as any,
-    referenceId: '',
-    category: ''
-  });
+  const [filters, setFilters] = useState<any>({});
+  const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newCategory, setNewCategory] = useState('');
@@ -48,11 +44,35 @@ const TransactionManager: React.FC<TransactionManagerProps> = ({ userId, role, i
   const fetchFilteredTransactions = async () => {
     setLoading(true);
     try {
-      const results = await queryTransactions(userId, role, {
-        ...filters,
-        status: filters.status || undefined
-      });
-      setTransactions(results);
+      let result = [...initialTransactions];
+
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        result = result.filter(t => 
+          (t.merchantName && t.merchantName.toLowerCase().includes(query)) ||
+          (t.referenceId && t.referenceId.toLowerCase().includes(query)) ||
+          (t.category && t.category.toLowerCase().includes(query)) ||
+          (t.id && t.id.toLowerCase().includes(query))
+        );
+      }
+
+      if (filters.status && filters.status.length > 0) {
+        result = result.filter(t => filters.status.includes(t.status));
+      }
+
+      if (filters.type && filters.type.length > 0) {
+        result = result.filter(t => filters.type.includes(t.type));
+      }
+
+      if (filters.category && filters.category.length > 0) {
+         result = result.filter(t => filters.category.includes(t.category));
+      }
+
+      if (filters.paymentSource && filters.paymentSource.length > 0) {
+        result = result.filter(t => t.payment_method && filters.paymentSource.includes(t.payment_method));
+      }
+
+      setTransactions(result);
     } catch (error) {
       console.error("Failed to fetch transactions:", error);
     } finally {
@@ -61,12 +81,8 @@ const TransactionManager: React.FC<TransactionManagerProps> = ({ userId, role, i
   };
 
   useEffect(() => {
-    if (initialTransactions.length > 0) {
-      setTransactions(initialTransactions);
-    } else {
-      fetchFilteredTransactions();
-    }
-  }, [userId, role]);
+    fetchFilteredTransactions();
+  }, [filters, searchQuery, initialTransactions]);
 
   const handleCategorize = async (id: string, category: string) => {
     try {
@@ -109,72 +125,19 @@ const TransactionManager: React.FC<TransactionManagerProps> = ({ userId, role, i
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input 
             type="text" 
-            placeholder="Search by Reference ID..."
+            placeholder="Search by keyword, reference ID..."
             className="w-full pl-10 pr-4 py-3 bg-[#f0f4f9] rounded-2xl border-none focus:ring-2 focus:ring-blue-500/20 transition-all text-sm"
-            value={filters.referenceId}
-            onChange={(e) => setFilters(prev => ({ ...prev, referenceId: e.target.value }))}
-            onKeyDown={(e) => e.key === 'Enter' && fetchFilteredTransactions()}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
-        <AnimatePresence>
-          {showFilters && (
-            <motion.div 
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Start Date</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                    <input 
-                      type="date" 
-                      className="w-full pl-9 pr-3 py-2 bg-[#f0f4f9] rounded-xl text-xs border-none focus:ring-1 focus:ring-blue-500"
-                      value={filters.startDate}
-                      onChange={(e) => setFilters(prev => ({ ...prev, startDate: e.target.value }))}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">End Date</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                    <input 
-                      type="date" 
-                      className="w-full pl-9 pr-3 py-2 bg-[#f0f4f9] rounded-xl text-xs border-none focus:ring-1 focus:ring-blue-500"
-                      value={filters.endDate}
-                      onChange={(e) => setFilters(prev => ({ ...prev, endDate: e.target.value }))}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Status</label>
-                  <select 
-                    className="w-full px-3 py-2 bg-[#f0f4f9] rounded-xl text-xs border-none focus:ring-1 focus:ring-blue-500 appearance-none"
-                    value={filters.status}
-                    onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                  >
-                    <option value="">All Status</option>
-                    <option value="success">Success</option>
-                    <option value="failed">Failed</option>
-                    <option value="pending">Pending</option>
-                  </select>
-                </div>
-              </div>
-              <div className="flex justify-end mt-4">
-                <button 
-                  onClick={fetchFilteredTransactions}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-full text-xs font-bold hover:bg-blue-700 transition-all shadow-sm"
-                >
-                  Apply Filters
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <FilterModal 
+          isOpen={showFilters} 
+          onClose={() => setShowFilters(false)} 
+          onApply={setFilters} 
+          currentFilters={filters} 
+        />
       </div>
 
       {/* List */}
