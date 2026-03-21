@@ -1,4 +1,4 @@
-export type UserRole = 'merchant' | 'customer';
+export type UserRole = "merchant" | "customer";
 
 export interface UserProfile {
   uid: string;
@@ -18,9 +18,13 @@ export interface Transaction {
   customerName: string;
   merchantName: string;
   category: string;
-  status: 'success' | 'failed' | 'pending';
+  status: "success" | "failed" | "pending";
   referenceId: string;
   description?: string;
+  type?: "Paid" | "Received" | "Cashback" | "Self Transfer";
+  payment_method?: string;
+  failure_reason?: string;
+  location?: string;
 }
 
 export interface VoiceAgentConfig {
