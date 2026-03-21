@@ -16,6 +16,7 @@ export const seedOneMonthData = async (userId: string, role: 'merchant' | 'custo
   
   const isMerchant = role === 'merchant';
   
+  
   // Generate structured dates to make sure we have data for today, yesterday, last week, etc.
   for (let i = 0; i < 50; i++) {
     // Heavily weight towards recent days (0-5 days)
@@ -46,5 +47,5 @@ export const seedOneMonthData = async (userId: string, role: 'merchant' | 'custo
   
   await batch.commit();
   console.log("Successfully seeded dynamic demo transactions.");
-  
+
 };
