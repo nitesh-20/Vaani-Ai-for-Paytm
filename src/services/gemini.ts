@@ -2,7 +2,7 @@ import { GoogleGenAI, Modality, LiveServerMessage, Type } from "@google/genai";
 import { collection, query, where, getDocs, orderBy, limit, Timestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Transaction } from "../types";
-import { mockTransactions } from "../mockData";
+import { mockTransactions, kiranaInventory } from "../mockData";
 
 const getAI = () => {
   const apiKey = (process.env as any).API_KEY || process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
