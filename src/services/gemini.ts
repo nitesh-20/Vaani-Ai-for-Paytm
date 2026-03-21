@@ -297,8 +297,9 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
       // INJECT REAL-TIME DATA DIRECTLY INTO PROMPT TO ELIMINATE TOOL LAG
       // By giving AI the recent transactions directly, it can answer instantly without the 2-second tool roundtrip.
       const recentTxs = mockTransactions.slice(0, 15).map(t => {
-        const party = t.type === 'Received' ? t.customerName : t.merchantName;
-        return `- ${t.type === 'Received' ? 'Received from' : 'Paid to'} ${party}, Amount: ₹${t.amount}, Status: ${t.status}, Category: ${t.category}`;
+        const party = t.merchantName && t.merchantName !== 'User' ? t.merchantName : (t.customerName || 'Unknown');
+        const timeStr = new Date(t.timestamp).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+        return `- ${t.type === 'Received' ? 'Received from' : 'Paid to'} ${party}, Amount: ₹${t.amount}, Status: ${t.status}, Time: ${timeStr}`;
       }).join('\\n    ');
 
       const merchantPrompt = `
