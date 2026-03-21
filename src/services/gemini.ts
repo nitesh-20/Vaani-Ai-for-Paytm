@@ -295,15 +295,38 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
       });
 
       // INJECT REAL-TIME DATA DIRECTLY INTO PROMPT TO ELIMINATE TOOL LAG
-      // By giving AI ALL recent transactions directly, it can answer instantly without the 2-second tool roundtrip.
+      // Calculate exactly as Dashboard.tsx to match values perfectly
+      let totalBalance = 245000;
+      let totalReceived = 0;
+      let totalSpent = 0;
+      const categorySpends: Record<string, number> = {};
+      const merchantSpends: Record<string, { count: number; total: number }> = {};
+
+      mockTransactions.forEach((t) => {
+        if (t.status === "failed") return;
+        const amount = Number(t.amount);
+        if (t.type === "Received" || t.type === "Cashback") {
+          totalReceived += amount;
+        } else {
+          totalSpent += amount;
+          const cat = t.category || "Other";
+          categorySpends[cat] = (categorySpends[cat] || 0) + amount;
+          const merch = t.merchantName || "Unknown";
+          if (!merchantSpends[merch]) merchantSpends[merch] = { count: 0, total: 0 };
+          merchantSpends[merch].count += 1;
+          merchantSpends[merch].total += amount;
+        }
+      });
+      const netBalance = totalBalance + totalReceived - totalSpent;
+
       const recentTxs = mockTransactions.slice(0, 50).map(t => {
         const party = t.merchantName && t.merchantName !== 'User' ? t.merchantName : (t.customerName || 'Unknown');
         const timeStr = new Date(t.timestamp).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
-        return `- ${t.type === 'Received' ? 'Received from' : 'Paid to'} ${party}, Amount: ₹${t.amount}, Status: ${t.status}, Time: ${timeStr}`;
+        return `- ${t.type === 'Received' ? 'Received from' : 'Paid to'} ${party}, Amount: ₹${t.amount}, Status: ${t.status}, Category: ${t.category || 'None'}, Time: ${timeStr}`;
       }).join('\\n    ');
       
-      const totalIn = mockTransactions.filter(t => t.type === 'Received' && t.status === 'success').reduce((acc, t) => acc + t.amount, 0);
-      const totalOut = mockTransactions.filter(t => t.type === 'Paid' && t.status === 'success').reduce((acc, t) => acc + t.amount, 0);
+      const spendingSnapshotStr = Object.entries(categorySpends).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([cat, amt]) => `${cat}: ₹${amt}`).join(', ');
+      const topMerchantsStr = Object.entries(merchantSpends).sort((a, b) => b[1].total - a[1].total).slice(0, 3).map(([merch, data]) => `${merch} (₹${data.total}, ${data.count} txns)`).join(', ');
 
       const merchantPrompt = `
     You are Vaani, a highly conversational, ultra-fast, and friendly AI Voice Assistant for Indian merchants.
@@ -313,8 +336,11 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
     [CURRENT CONTEXT - MEMORIZE THIS!]
     Today's Date: ${currentDate}
     Current Time: ${currentTime}
-    Total Incoming Payments (Success): ₹${totalIn}
-    Total Outgoing Payments (Success): ₹${totalOut}
+    Total Balance (Available to spend): ₹${netBalance}
+    Total Received (Incoming): ₹${totalReceived}
+    Monthly Spends (Outgoing): ₹${totalSpent}
+    Spending Snapshot (Categories): ${spendingSnapshotStr}
+    Top Merchants: ${topMerchantsStr}
     
     [YOUR DASHBOARD DATA - YOU ALREADY HAVE ALL THE DATA. NEVER USE TOOLS]:
     ${recentTxs}
@@ -349,8 +375,11 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
     [CURRENT CONTEXT - MEMORIZE THIS!]
     Today's Date: ${currentDate}
     Current Time: ${currentTime}
-    Total Incoming Payments (Success): ₹${totalIn}
-    Total Outgoing Payments (Success): ₹${totalOut}
+    Total Balance (Available to spend): ₹${netBalance}
+    Total Received (Incoming): ₹${totalReceived}
+    Monthly Spends (Outgoing): ₹${totalSpent}
+    Spending Snapshot (Categories): ${spendingSnapshotStr}
+    Top Merchants: ${topMerchantsStr}
 
     [YOUR DASHBOARD DATA - YOU ALREADY HAVE ALL THE DATA. NEVER USE TOOLS]:
     ${recentTxs}
