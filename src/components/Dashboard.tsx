@@ -93,7 +93,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
       (a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
     )
-    .slice(0, expandedTxs ? 20 : 5);
+    .slice(0, expandedTxs ? transactions.length : 5);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -381,18 +381,18 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
               Recent Transactions
             </h3>
             <button
-              onClick={() => setExpandedTxs(!expandedTxs)}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                onClick={() => setExpandedTxs(!expandedTxs)}
+                className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+
             >
               {expandedTxs ? "View Less" : "View All History"}
             </button>
           </div>
-          <div className="divide-y divide-gray-50">
+            <div className={cn("divide-y divide-gray-50", expandedTxs && "max-h-[600px] overflow-y-auto")}>
             {recentTransactions.map((t) => (
               <div
                 key={t.id}
-                className="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer"
-                onClick={() => setExpandedTxs(!expandedTxs)}
+                className="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors "
               >
                 <div className="flex items-center gap-4">
                   <div
