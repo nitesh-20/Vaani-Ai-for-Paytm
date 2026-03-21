@@ -52,9 +52,18 @@ export const queryTransactions = async (
     endDate?: string;
     status?: 'success' | 'failed' | 'pending';
     referenceId?: string;
+    searchQuery?: string;
   }
 ): Promise<Transaction[]> => {
   let result = [...mockTransactions];
+
+  if (filters.searchQuery) {
+    const q = filters.searchQuery.toLowerCase();
+    result = result.filter((t: Transaction) => 
+      t.merchantName?.toLowerCase().includes(q) || 
+      t.customerName?.toLowerCase().includes(q)
+    );
+  }
 
   if (filters.category) result = result.filter((t: Transaction) => t.category === filters.category);
   if (filters.status) result = result.filter((t: Transaction) => t.status === filters.status);
@@ -183,7 +192,7 @@ export const tools = [
       },
       {
         name: "queryTransactions",
-        description: "Advanced filtering for transactions. Use this for queries like 'Show me all food expenses between ₹500 and ₹1000 from last week' or 'Find transaction with reference ID 123'.",
+        description: "Advanced filtering for transactions. Use this for queries like 'Show me all food expenses', 'Did I pay Shreed?', 'find transactions for Nitesh or Zomato', etc.",
         parameters: {
           type: Type.OBJECT,
           properties: {
@@ -194,7 +203,8 @@ export const tools = [
             startDate: { type: Type.STRING, description: "Start date in ISO format" },
             endDate: { type: Type.STRING, description: "End date in ISO format" },
             status: { type: Type.STRING, enum: ["success", "failed", "pending"], description: "Transaction status" },
-            referenceId: { type: Type.STRING, description: "Reference ID of the transaction" }
+            referenceId: { type: Type.STRING, description: "Reference ID of the transaction" },
+            searchQuery: { type: Type.STRING, description: "Name of the person or merchant to search for (e.g. 'Shreed', 'Nitesh', 'Zomato')." }
           }
         }
       },
