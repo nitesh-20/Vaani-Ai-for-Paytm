@@ -588,12 +588,21 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
           
           sessionPromise.then((session: any) => {
             sessionRef.current = session;
-            // Trigger an initial greeting from Vaani
-            session.sendClientContent({
-              turns: [{ role: "user", parts: [{ text: "Hello Vaani, I am here. Please greet me in short." }] }],
-              turnComplete: true
-            });
             
+            // Wait slightly before sending text greeting to ensure backend is ready
+            setTimeout(() => {
+              if (sessionRef.current) {
+                try {
+                  sessionRef.current.sendClientContent({
+                    turns: [{ role: "user", parts: [{ text: "Hello Vaani, I am here. Please greet me in short." }] }],
+                    turnComplete: true
+                  });
+                } catch (err) {
+                  console.error("Failed to send initial text:", err);
+                }
+              }
+            }, 500);
+
             const source = audioContextRef.current!.createMediaStreamSource(stream);
             const analyser = audioContextRef.current!.createAnalyser();
             analyser.fftSize = 256;
@@ -603,36 +612,46 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
             const workletNode = new AudioWorkletNode(audioContextRef.current!, 'audio-input-processor');
             workletNodeRef.current = workletNode;
 
-            workletNode.port.onmessage = (e) => {
-              const inputData = e.data;
-              const pcmData = new Int16Array(inputData.length);
-              for (let i = 0; i < inputData.length; i++) {
-                pcmData[i] = Math.max(-1, Math.min(1, inputData[i])) * 32767;
-              }
-              
-              // Efficient base64 conversion
-              const uint8Array = new Uint8Array(pcmData.buffer);
-              
-              // Faster block-based JS conversion
-              let binary = '';
-              const chunkSize = 8192;
-              for (let i = 0; i < uint8Array.length; i += chunkSize) {
-                const chunk = uint8Array.subarray(i, i + chunkSize);
-                binary += String.fromCharCode.apply(null, chunk as any);
-              }
-              const base64Data = btoa(binary);
+            let pcmBuffer: number[] = [];
 
-              if (sessionRef.current) {
-                try {
-                  sessionRef.current.sendRealtimeInput({
-                    audio: { data: base64Data, mimeType: 'audio/pcm;rate=16000' }
-                  });
-                } catch (e: any) {
-                  // Ignore if socket is closing/closed
-                  if (e.message && e.message.includes('CLOSING or CLOSED')) {
-                    sessionRef.current = null;
-                  } else {
-                    console.error("Error sending realtime input:", e);
+            workletNode.port.onmessage = (e) => {
+              const inputData = e.data as Float32Array;
+
+              // Convert Float32 samples [-1,1] to 16-bit PCM and accumulate
+              for (let i = 0; i < inputData.length; i++) {
+                pcmBuffer.push(Math.max(-1, Math.min(1, inputData[i])) * 32767);
+              }
+
+              // Send audio in chunks of 2048 samples (~128ms at 16kHz)
+              // to avoid overwhelming the WebSocket with tiny messages.
+              if (pcmBuffer.length >= 2048) {
+                const pcmData = new Int16Array(pcmBuffer);
+                pcmBuffer = []; // reset for next chunk
+
+                // Convert to base64
+                const uint8Array = new Uint8Array(pcmData.buffer);
+                let binary = '';
+                const chunkSize = 8192;
+                for (let i = 0; i < uint8Array.length; i += chunkSize) {
+                  const chunk = uint8Array.subarray(i, i + chunkSize);
+                  binary += String.fromCharCode.apply(null, chunk as any);
+                }
+                const base64Data = btoa(binary);
+
+                if (sessionRef.current) {
+                  try {
+                    // Send using the structure the SDK maps directly to the API
+                    sessionRef.current.sendRealtimeInput({
+                      audio: { data: base64Data, mimeType: 'audio/pcm;rate=16000' }
+                    });
+                  } catch (e: any) {
+                    const msg = typeof e === 'string' ? e : e?.message;
+                    // Ignore and stop streaming if socket is closed
+                    if (msg && msg.includes('CLOSING or CLOSED')) {
+                      sessionRef.current = null;
+                    } else {
+                      console.error('Error sending realtime input:', e);
+                    }
                   }
                 }
               }
@@ -707,11 +726,12 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
           }
         },
         onerror: (err: any) => {
-          console.error("Live API Error:", err);
+          console.error("Live API Error =>", err);
           setError("Connection lost. Reconnecting...");
           stopSession();
         },
-        onclose: () => {
+        onclose: (e: any) => {
+          console.log("Live API Closed => Event:", e, "Code:", e?.code, "Reason:", e?.reason);
           stopSession();
         }
       });

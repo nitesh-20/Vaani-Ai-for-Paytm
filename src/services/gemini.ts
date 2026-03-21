@@ -377,7 +377,7 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
       // Create a new GoogleGenAI instance right before making an API call to ensure it always uses the most up-to-date API key
       const ai = getAI();
       return await ai.live.connect({
-        model: "gemini-2.5-flash-native-audio-preview-12-2025",
+        model: "gemini-2.5-flash-native-audio-preview-12-2025", 
         callbacks,
         config: {
           responseModalities: [Modality.AUDIO],
