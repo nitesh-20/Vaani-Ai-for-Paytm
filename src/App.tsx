@@ -21,9 +21,11 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { UserProfile, Transaction, UserRole } from './types';
+import { mockTransactions } from './mockData';
 import { cn } from './lib/utils';
 import VoiceAgent from './components/VoiceAgent';
 import TransactionManager from './components/TransactionManager';
+import Dashboard from './components/Dashboard';
 import { seedOneMonthData } from './services/seed';
 import { handleFirestoreError, OperationType } from './utils/errorHandling';
 import { 
@@ -52,14 +54,14 @@ const App: React.FC = () => {
     role: 'merchant',
     createdAt: new Date().toISOString()
   });
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
   const [loading, setLoading] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isSeeding, setIsSeeding] = useState(false);
   const [seedSuccess, setSeedSuccess] = useState(false);
   const [autoAnnounce, setAutoAnnounce] = useState(false);
-  const [activeView, setActiveView] = useState<'chat' | 'transactions'>('chat');
+  const [activeView, setActiveView] = useState<'chat' | 'transactions' | 'dashboard'>('chat');
 
   useEffect(() => {
     // Auth is disabled as per request
@@ -87,17 +89,17 @@ const App: React.FC = () => {
       collection(db, 'transactions'),
       where(field, '==', user.uid),
       orderBy('timestamp', 'desc'),
-      limit(10)
+      limit(100)
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const txs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transaction));
-      setTransactions(txs);
-    }, (error) => {
-      handleFirestoreError(error, OperationType.LIST, 'transactions');
-    });
-
-    return () => unsubscribe();
+//   const unsubscribe = onSnapshot(q, (snapshot) => {
+    //     const txs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transaction));
+    //     setTransactions(txs);
+    //   }, (error) => {
+    //     handleFirestoreError(error, OperationType.LIST, 'transactions');
+    //   });
+    //
+    //   return () => unsubscribe();
   }, [user, profile]);
 
   const handleLogin = async () => {
@@ -211,6 +213,15 @@ const App: React.FC = () => {
 
           <div className="space-y-1 mb-6">
             <button 
+              onClick={() => setActiveView('dashboard')}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all ${
+                activeView === 'dashboard' ? 'bg-[#e8f0fe] text-[#1967d2] font-medium' : 'hover:bg-[#e1e5ea] text-[#444746]'
+              }`}
+            >
+              <TrendingUp className={`w-4 h-4 ${activeView === 'dashboard' ? 'text-[#1967d2]' : ''}`} />
+              Dashboard
+            </button>
+            <button 
               onClick={() => setActiveView('chat')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all ${
                 activeView === 'chat' ? 'bg-[#e8f0fe] text-[#1967d2] font-medium' : 'hover:bg-[#e1e5ea] text-[#444746]'
@@ -219,29 +230,6 @@ const App: React.FC = () => {
               <Zap className={`w-4 h-4 ${activeView === 'chat' ? 'fill-[#1967d2]' : ''}`} />
               Vaani AI
             </button>
-            <button 
-              onClick={() => setActiveView('transactions')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all ${
-                activeView === 'transactions' ? 'bg-[#e8f0fe] text-[#1967d2] font-medium' : 'hover:bg-[#e1e5ea] text-[#444746]'
-              }`}
-            >
-              <Database className={`w-4 h-4 ${activeView === 'transactions' ? 'fill-[#1967d2]' : ''}`} />
-              Transactions
-            </button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto space-y-1 custom-scrollbar">
-            <p className="px-4 text-[11px] font-bold text-[#444746] uppercase tracking-wider mb-2 opacity-60">Recent activity</p>
-            {transactions.length > 0 ? (
-              transactions.slice(0, 10).map((tx, i) => (
-                <div key={i} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#e1e5ea] rounded-full text-sm text-[#1f1f1f] cursor-pointer truncate transition-colors group">
-                  <Clock className="w-4 h-4 text-[#444746] shrink-0 group-hover:text-blue-500" />
-                  <span className="truncate">₹{tx.amount} • {tx.customerName || tx.merchantName}</span>
-                </div>
-              ))
-            ) : (
-              <p className="px-4 text-xs text-[#444746] italic">No recent transactions</p>
-            )}
           </div>
 
           <div className="mt-auto pt-4 border-t border-[#d2d7dd] space-y-1">
@@ -309,34 +297,33 @@ const App: React.FC = () => {
           </header>
         )}
 
-        {/* Floating Navigation for Chat View */}
-        {activeView === 'chat' && (
-          <div className="absolute top-8 left-1/2 -translate-x-1/2 z-50 flex bg-[#f0f4f9]/80 backdrop-blur-xl p-1 rounded-2xl border border-white/20 shadow-lg">
-            <button 
-              onClick={() => setActiveView('chat')}
-              className={cn(
-                "px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all",
-                activeView === 'chat' ? "bg-white text-zinc-900 shadow-sm" : "text-[#444746] hover:text-zinc-900"
-              )}
-            >
-              Vaani
-            </button>
-            <button 
-              onClick={() => setActiveView('transactions')}
-              className={cn(
-                "px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all",
-                activeView === 'transactions' ? "bg-white text-zinc-900 shadow-sm" : "text-[#444746] hover:text-zinc-900"
-              )}
-            >
-              Data
-            </button>
+        {/* Floating Navigation */}
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 z-50 flex bg-[#f0f4f9]/80 backdrop-blur-xl p-1 rounded-2xl border border-white/20 shadow-lg">
+          <button 
+            onClick={() => setActiveView('dashboard')}
+            className={cn(
+              "px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all",
+              activeView === 'dashboard' ? "bg-white text-zinc-900 shadow-sm" : "text-[#444746] hover:text-zinc-900"
+            )}
+          >
+            Dashboard
+          </button>
+          <button 
+            onClick={() => setActiveView('chat')}
+            className={cn(
+              "px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all",
+              activeView === 'chat' ? "bg-white text-zinc-900 shadow-sm" : "text-[#444746] hover:text-zinc-900"
+            )}
+          >
+            Vaani
+          </button>
           </div>
-        )}
 
-        <div className="flex-1 flex flex-col items-center justify-center px-4 overflow-y-auto custom-scrollbar">
-          <div className="w-full max-w-4xl flex flex-col items-center py-12">
+        {/* Dynamic Content Area */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar relative z-10">
+          <div className="max-w-4xl mx-auto w-full p-4 md:p-8">
             <AnimatePresence mode="wait">
-              {activeView === 'chat' ? (
+              {activeView === 'chat' && (
                 <motion.div 
                   key="chat"
                   initial={{ opacity: 0, y: 20 }}
@@ -349,20 +336,16 @@ const App: React.FC = () => {
                     <VoiceAgent userId={user.uid} role={profile.role} userName={profile.name} autoAnnounce={autoAnnounce} />
                   </div>
                 </motion.div>
-              ) : (
+              )}
+              {activeView === 'dashboard' && (
                 <motion.div 
-                  key="transactions"
+                  key="dashboard"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   className="w-full"
                 >
-                  <TransactionManager 
-                    userId={user.uid} 
-                    role={profile.role} 
-                    initialTransactions={transactions} 
-                    onSeed={() => seedOneMonthData(user.uid, profile.role, profile.name)}
-                  />
+                  <Dashboard transactions={transactions} onSetView={setActiveView} />
                 </motion.div>
               )}
             </AnimatePresence>
