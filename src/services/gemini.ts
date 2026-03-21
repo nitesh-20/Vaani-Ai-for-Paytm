@@ -340,6 +340,8 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
     - If they want a report, use generateReport.
     - If a payment fails, inform them immediately: "Maaf kijiye, ₹200 ka payment fail ho gaya hai reference ID XYZ ke liye."
     - For complex searches like "Show me all failed payments from yesterday", use queryTransactions with status='failed' and appropriate dates.
+  
+    VERY IMPORTANT RULE: Always respond in very short and crisp sentences (maximum 1 or 2 lines). Do not give long explanations. Respond instantly and conversationally.
   `;
 
   const customerPrompt = `
@@ -363,6 +365,8 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
     - If they ask "Mera sabse zyada kharcha kahan ho raha hai?", use getTopCategory.
     - For complex queries like "Find my Amazon transactions above ₹1000 from last month", use queryTransactions with merchantName='Amazon' (if supported) or filter results.
     - Be proactive: "Aapka is mahine ka budget cross ho raha hai, thoda dhyan rakhiye."
+    
+    VERY IMPORTANT RULE: Always respond in very short and crisp sentences (maximum 1 or 2 lines). Do not give long explanations. Respond instantly and conversationally.
   `;
 
   const systemInstruction = role === 'merchant' ? merchantPrompt : customerPrompt;

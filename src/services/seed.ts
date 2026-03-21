@@ -7,8 +7,8 @@ export const seedOneMonthData = async (userId: string, role: 'merchant' | 'custo
   const batch = writeBatch(db);
   const transactions: Transaction[] = [];
   
-  const startDate = new Date("2026-02-20T00:00:00Z");
-  const endDate = new Date("2026-03-20T23:59:59Z");
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
   
   const merchants = ["Chai Point", "Sharma General Store", "Big Basket", "Uber", "Zomato", "Amazon", "Swiggy", "Reliance Fresh", "Apollo Pharmacy", "Petrol Pump"];
   const customers = ["Aman", "Rohit", "Sneha", "Priya", "Vikram", "Karan", "Anjali", "Siddharth", "Megha", "Rahul"];
@@ -16,9 +16,11 @@ export const seedOneMonthData = async (userId: string, role: 'merchant' | 'custo
   
   const isMerchant = role === 'merchant';
   
-  // Generate ~100 transactions (3-4 per day on average)
-  for (let i = 0; i < 100; i++) {
-    const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+  // Generate structured dates to make sure we have data for today, yesterday, last week, etc.
+  for (let i = 0; i < 50; i++) {
+    // Heavily weight towards recent days (0-5 days)
+    const daysAgo = i < 20 ? (Math.random() * 2) : (Math.random() * 30); 
+    const randomTime = now.getTime() - daysAgo * 24 * 60 * 60 * 1000;
     const timestamp = new Date(randomTime).toISOString();
     
     const merchant = merchants[Math.floor(Math.random() * merchants.length)];
@@ -43,5 +45,5 @@ export const seedOneMonthData = async (userId: string, role: 'merchant' | 'custo
   }
   
   await batch.commit();
-  console.log("Successfully seeded 60 transactions.");
+  console.log("Successfully seeded dynamic demo transactions.");
 };

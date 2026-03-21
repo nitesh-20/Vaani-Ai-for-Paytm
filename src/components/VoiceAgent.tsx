@@ -339,16 +339,12 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
     const { name, args, id } = toolCall;
     console.log(`Tool Call: ${name}`, args);
     
-    // Notify the backend of the tool call (simulating backend-driven AI)
-    try {
-      await fetch('/api/ai/tools', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, args, userId, role })
-      });
-    } catch (e) {
-      console.warn("Backend notification failed, proceeding locally.");
-    }
+    // 🔥 FIX: Make backend notification fire-and-forget so it DOESN'T block the AI's response time
+    fetch('/api/ai/tools', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, args, userId, role })
+    }).catch(e => console.warn("Backend notification failed (ignored)"));
     
     let result;
     try {
@@ -616,10 +612,13 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
               
               // Efficient base64 conversion
               const uint8Array = new Uint8Array(pcmData.buffer);
+              
+              // Faster block-based JS conversion
               let binary = '';
-              const len = uint8Array.byteLength;
-              for (let i = 0; i < len; i++) {
-                binary += String.fromCharCode(uint8Array[i]);
+              const chunkSize = 8192;
+              for (let i = 0; i < uint8Array.length; i += chunkSize) {
+                const chunk = uint8Array.subarray(i, i + chunkSize);
+                binary += String.fromCharCode.apply(null, chunk as any);
               }
               const base64Data = btoa(binary);
 
@@ -650,8 +649,9 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
               if (part.inlineData?.data) {
                 try {
                   const binaryString = atob(part.inlineData.data);
-                  const bytes = new Uint8Array(binaryString.length);
-                  for (let i = 0; i < binaryString.length; i++) {
+                  const len = binaryString.length;
+                  const bytes = new Uint8Array(len);
+                  for (let i = 0; i < len; i++) {
                     bytes[i] = binaryString.charCodeAt(i);
                   }
                   
