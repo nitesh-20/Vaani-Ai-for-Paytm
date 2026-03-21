@@ -8,6 +8,13 @@ export interface UserProfile {
   createdAt: string;
 }
 
+export interface TransactionItem {
+  id: number;
+  name: string;
+  quantity: number;
+  price: number;
+}
+
 export interface Transaction {
   id?: string;
   amount: number;
@@ -25,6 +32,7 @@ export interface Transaction {
   payment_method?: string;
   failure_reason?: string;
   location?: string;
+  items?: TransactionItem[];
 }
 
 export interface VoiceAgentConfig {

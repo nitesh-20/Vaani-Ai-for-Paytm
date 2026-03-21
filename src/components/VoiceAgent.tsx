@@ -436,21 +436,31 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
     setIsSpeaking(true);
     const chunk = audioQueueRef.current.shift()!;
     
-    const float32Data = new Float32Array(chunk.length);
-    for (let i = 0; i < chunk.length; i++) {
-      float32Data[i] = chunk[i] / 32768.0;
-    }
+    try {
+      if (!chunk || chunk.length === 0) {
+        playNextChunk();
+        return;
+      }
 
-    const buffer = audioContextRef.current.createBuffer(1, float32Data.length, 24000);
-    buffer.getChannelData(0).set(float32Data);
+      const float32Data = new Float32Array(chunk.length);
+      for (let i = 0; i < chunk.length; i++) {
+        float32Data[i] = chunk[i] / 32768.0;
+      }
 
-    const source = audioContextRef.current.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioContextRef.current.destination);
-    source.onended = () => {
+      const buffer = audioContextRef.current.createBuffer(1, float32Data.length, 24000);
+      buffer.getChannelData(0).set(float32Data);
+
+      const source = audioContextRef.current.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioContextRef.current.destination);
+      source.onended = () => {
+        playNextChunk();
+      };
+      source.start();
+    } catch (err) {
+      console.error("Audio playback error:", err);
       playNextChunk();
-    };
-    source.start();
+    }
   }, []);
 
   const handleInitialSetup = async () => {
@@ -646,9 +656,9 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ userId, role, userName, autoAnn
                     });
                   } catch (e: any) {
                     const msg = typeof e === 'string' ? e : e?.message;
-                    // Ignore and stop streaming if socket is closed
                     if (msg && msg.includes('CLOSING or CLOSED')) {
-                      sessionRef.current = null;
+                      console.log("Websocket closed during send. Stopping session.");
+                      stopSession();
                     } else {
                       console.error('Error sending realtime input:', e);
                     }

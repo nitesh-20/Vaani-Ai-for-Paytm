@@ -173,6 +173,15 @@ const TransactionManager: React.FC<TransactionManagerProps> = ({ userId, role, i
                         <span>•</span>
                         <span>{new Date(tx.timestamp).toLocaleDateString()}</span>
                       </div>
+                      {tx.items && tx.items.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1.5 maxWidth-[300px]">
+                          {tx.items.map((item, i) => (
+                            <div key={i} className="px-1.5 py-0.5 bg-gray-100 rounded text-[9px] text-gray-500 border border-gray-200">
+                               {item.name} <span className="opacity-60 text-[8px] ml-0.5">x{item.quantity}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">

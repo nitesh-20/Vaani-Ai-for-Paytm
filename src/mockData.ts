@@ -1,1010 +1,1107 @@
-import { Transaction } from "./types";
-
-export const mockTransactions: Transaction[] = [
+export const mockTransactions: any[] = [
   {
-    "id": "t1",
-    "amount": 450,
-    "currency": "INR",
-    "timestamp": "2026-03-21T03:23:19.919Z",
-    "merchantId": "M_ZOMATO",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Zomato",
-    "category": "Food & Grocery",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_ZOM_1",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t65",
-    "amount": 1500,
-    "currency": "INR",
-    "timestamp": "2026-03-21T00:59:19.920Z",
-    "merchantId": "M_SHREED",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Shreed",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_SHREED_1",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t28",
-    "amount": 4985,
-    "currency": "INR",
-    "timestamp": "2026-03-20T19:11:25.688Z",
-    "merchantId": "M_ARUN",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Arun",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN08756917",
     "type": "Received",
-    "referenceId": "TXN_GEN_29",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t2",
-    "amount": 15000,
-    "currency": "INR",
-    "timestamp": "2026-03-20T17:47:19.920Z",
-    "merchantId": "M_RAHUL",
-    "customerId": "u1",
-    "customerName": "User",
+    "amount": 1283,
     "merchantName": "Rahul Sharma",
-    "category": "Transfer",
+    "customerName": "Rahul Sharma",
+    "timestamp": 1774083807581,
     "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_RCV_1",
-    "payment_method": "UPI"
+    "category": "Transfer",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 3,
+        "price": 210
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 1,
+        "price": 28
+      },
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 3,
+        "price": 199
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 1,
+        "price": 28
+      }
+    ]
   },
   {
-    "id": "t19",
-    "amount": 1127,
-    "currency": "INR",
-    "timestamp": "2026-03-20T14:06:35.801Z",
-    "merchantId": "M_JIOPRE-PAID",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Jio Pre-Paid",
-    "category": "Travel",
-    "status": "failed",
+    "id": "TXN69099886",
     "type": "Paid",
-    "referenceId": "TXN_GEN_20",
-    "payment_method": "Debit Card"
+    "amount": 773,
+    "merchantName": "Myntra",
+    "timestamp": 1774059391961,
+    "status": "success",
+    "category": "Shopping",
+    "payment_method": "Credit Card",
+    "items": []
   },
   {
-    "id": "t3",
-    "amount": 1250,
-    "currency": "INR",
-    "timestamp": "2026-03-20T05:47:19.920Z",
-    "merchantId": "M_JIO",
-    "customerId": "u1",
-    "customerName": "User",
+    "id": "TXN52290266",
+    "type": "Paid",
+    "amount": 2013,
     "merchantName": "Jio Pre-Paid",
+    "timestamp": 1773974941807,
+    "status": "success",
     "category": "Recharges & Bill Payments",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_JIO_1",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t66",
-    "amount": 8000,
-    "currency": "INR",
-    "timestamp": "2026-03-20T00:59:19.920Z",
-    "merchantId": "M_NITESH",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Nitesh",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_NITESH_1",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t55",
-    "amount": 1856,
-    "currency": "INR",
-    "timestamp": "2026-03-19T23:58:45.358Z",
-    "merchantId": "M_PAYTMCASHBACK",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Paytm Cashback",
-    "category": "Shopping",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_56",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t54",
-    "amount": 1897,
-    "currency": "INR",
-    "timestamp": "2026-03-19T19:55:45.098Z",
-    "merchantId": "M_MAKEMYTRIP",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "MakeMyTrip",
-    "category": "Travel",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_55",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t4",
-    "amount": 699,
-    "currency": "INR",
-    "timestamp": "2026-03-19T17:47:19.920Z",
-    "merchantId": "M_AMAZON",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Amazon India",
-    "category": "Shopping",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_AMZN_1",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t27",
-    "amount": 1156,
-    "currency": "INR",
-    "timestamp": "2026-03-19T15:27:19.869Z",
-    "merchantId": "M_ANJALI",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Anjali",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_28",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t5",
-    "amount": 50,
-    "currency": "INR",
-    "timestamp": "2026-03-19T05:47:19.920Z",
-    "merchantId": "M_PAYTM",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Paytm Cashback",
-    "category": "Cashback",
-    "status": "success",
-    "type": "Cashback",
-    "referenceId": "TXN_CB_1",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t67",
-    "amount": 250,
-    "currency": "INR",
-    "timestamp": "2026-03-18T17:47:19.920Z",
-    "merchantId": "M_VIVEK",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vivek",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_VIVEK_1",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t6",
-    "amount": 4500,
-    "currency": "INR",
-    "timestamp": "2026-03-18T05:47:19.920Z",
-    "merchantId": "M_MAKEMYTRIP",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "MakeMyTrip",
-    "category": "Travel",
-    "status": "failed",
-    "type": "Paid",
-    "referenceId": "TXN_MMT_1",
     "payment_method": "UPI",
-    "failure_reason": "Bank Server Down"
+    "items": []
   },
   {
-    "id": "t51",
-    "amount": 3839,
-    "currency": "INR",
-    "timestamp": "2026-03-18T04:32:15.609Z",
-    "merchantId": "M_POOJA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Pooja",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN54162899",
     "type": "Paid",
-    "referenceId": "TXN_GEN_52",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t43",
-    "amount": 1890,
-    "currency": "INR",
-    "timestamp": "2026-03-17T23:36:00.479Z",
-    "merchantId": "M_VIKRAMPATEL",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vikram Patel",
-    "category": "Transfer",
+    "amount": 1849,
+    "merchantName": "LIC Premium",
+    "timestamp": 1773940839034,
     "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_44",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t7",
-    "amount": 800,
-    "currency": "INR",
-    "timestamp": "2026-03-17T05:47:19.920Z",
-    "merchantId": "M_BOOKMYSHOW",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "BookMyShow",
-    "category": "Movies & Events",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_BMS_1",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t56",
-    "amount": 78,
-    "currency": "INR",
-    "timestamp": "2026-03-16T12:58:34.892Z",
-    "merchantId": "M_SNEHA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Sneha",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_57",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t24",
-    "amount": 695,
-    "currency": "INR",
-    "timestamp": "2026-03-16T12:53:16.163Z",
-    "merchantId": "M_AMITKUMAR",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Amit Kumar",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_25",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t12",
-    "amount": 614,
-    "currency": "INR",
-    "timestamp": "2026-03-16T05:56:22.945Z",
-    "merchantId": "M_ROHAN",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Rohan",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_13",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t8",
-    "amount": 2400,
-    "currency": "INR",
-    "timestamp": "2026-03-16T05:47:19.920Z",
-    "merchantId": "M_DMART",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "D-Mart",
-    "category": "Food & Grocery",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_DMT_1",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t14",
-    "amount": 1634,
-    "currency": "INR",
-    "timestamp": "2026-03-15T22:39:04.763Z",
-    "merchantId": "M_D-MART",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "D-Mart",
     "category": "Insurance",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_15",
-    "payment_method": "Debit Card"
+    "payment_method": "Debit Card",
+    "items": []
   },
   {
-    "id": "t32",
-    "amount": 4466,
-    "currency": "INR",
-    "timestamp": "2026-03-15T15:30:55.739Z",
-    "merchantId": "M_VIKRAMPATEL",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vikram Patel",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_33",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t9",
-    "amount": 3000,
-    "currency": "INR",
-    "timestamp": "2026-03-15T05:47:19.920Z",
-    "merchantId": "M_PRIYA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Priya Singh",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN42212388",
     "type": "Received",
-    "referenceId": "TXN_RCV_2",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t53",
-    "amount": 4945,
-    "currency": "INR",
-    "timestamp": "2026-03-14T22:04:31.673Z",
-    "merchantId": "M_ANJALI",
-    "customerId": "u1",
-    "customerName": "User",
+    "amount": 150,
     "merchantName": "Anjali",
+    "customerName": "Anjali",
+    "timestamp": 1773934647342,
+    "status": "success",
     "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_54",
-    "payment_method": "Debit Card"
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "6",
+        "name": "Dabur Honey 500g",
+        "qty": 1,
+        "price": 150
+      }
+    ]
   },
   {
-    "id": "t33",
-    "amount": 4607,
-    "currency": "INR",
-    "timestamp": "2026-03-14T20:35:17.258Z",
-    "merchantId": "M_NITESH",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Nitesh",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN66839037",
     "type": "Paid",
-    "referenceId": "TXN_GEN_34",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t58",
-    "amount": 110,
-    "currency": "INR",
-    "timestamp": "2026-03-14T06:08:14.747Z",
-    "merchantId": "M_STARBUCKS",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Starbucks",
-    "category": "Paytm Gold",
+    "amount": 917,
+    "merchantName": "Myntra",
+    "timestamp": 1773920614404,
     "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_59",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t38",
-    "amount": 4578,
-    "currency": "INR",
-    "timestamp": "2026-03-14T03:21:44.358Z",
-    "merchantId": "M_OYO",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Oyo",
-    "category": "Paytm Gold",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_39",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t22",
-    "amount": 3782,
-    "currency": "INR",
-    "timestamp": "2026-03-14T00:30:29.981Z",
-    "merchantId": "M_PAYTMCASHBACK",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Paytm Cashback",
-    "category": "Food & Grocery",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_23",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t45",
-    "amount": 3942,
-    "currency": "INR",
-    "timestamp": "2026-03-13T05:28:37.614Z",
-    "merchantId": "M_SNEHA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Sneha",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_46",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t61",
-    "amount": 411,
-    "currency": "INR",
-    "timestamp": "2026-03-13T02:37:25.566Z",
-    "merchantId": "M_PRIYASINGH",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Priya Singh",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_62",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t10",
-    "amount": 941,
-    "currency": "INR",
-    "timestamp": "2026-03-12T01:57:54.268Z",
-    "merchantId": "M_UBER",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Uber",
-    "category": "Movies & Events",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_11",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t26",
-    "amount": 4945,
-    "currency": "INR",
-    "timestamp": "2026-03-11T20:43:11.088Z",
-    "merchantId": "M_UBER",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Uber",
-    "category": "Paytm Gold",
-    "status": "failed",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_27",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t49",
-    "amount": 4716,
-    "currency": "INR",
-    "timestamp": "2026-03-11T07:13:52.768Z",
-    "merchantId": "M_PRIYASINGH",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Priya Singh",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_50",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t21",
-    "amount": 610,
-    "currency": "INR",
-    "timestamp": "2026-03-10T16:41:25.532Z",
-    "merchantId": "M_IRCTC",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "IRCTC",
-    "category": "Insurance",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_22",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t17",
-    "amount": 2996,
-    "currency": "INR",
-    "timestamp": "2026-03-10T14:02:36.010Z",
-    "merchantId": "M_NYKAA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Nykaa",
-    "category": "Movies & Events",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_18",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t60",
-    "amount": 3922,
-    "currency": "INR",
-    "timestamp": "2026-03-07T20:40:04.504Z",
-    "merchantId": "M_VIKRAMPATEL",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vikram Patel",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_61",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t25",
-    "amount": 2069,
-    "currency": "INR",
-    "timestamp": "2026-03-06T18:01:43.833Z",
-    "merchantId": "M_JIOPRE-PAID",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Jio Pre-Paid",
-    "category": "Paytm Gold",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_26",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t44",
-    "amount": 4847,
-    "currency": "INR",
-    "timestamp": "2026-03-06T01:47:57.167Z",
-    "merchantId": "M_POOJA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Pooja",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_45",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t29",
-    "amount": 2849,
-    "currency": "INR",
-    "timestamp": "2026-03-05T22:30:32.718Z",
-    "merchantId": "M_POOJA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Pooja",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_30",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t16",
-    "amount": 4730,
-    "currency": "INR",
-    "timestamp": "2026-03-05T08:32:07.707Z",
-    "merchantId": "M_STARBUCKS",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Starbucks",
-    "category": "Travel",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_17",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t15",
-    "amount": 3854,
-    "currency": "INR",
-    "timestamp": "2026-03-04T17:54:46.928Z",
-    "merchantId": "M_ANJALI",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Anjali",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_16",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t42",
-    "amount": 5026,
-    "currency": "INR",
-    "timestamp": "2026-03-04T12:07:12.488Z",
-    "merchantId": "M_POOJA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Pooja",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_43",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t36",
-    "amount": 1565,
-    "currency": "INR",
-    "timestamp": "2026-03-04T08:38:32.951Z",
-    "merchantId": "M_MAKEMYTRIP",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "MakeMyTrip",
-    "category": "Movies & Events",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_37",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t48",
-    "amount": 4841,
-    "currency": "INR",
-    "timestamp": "2026-03-03T16:23:20.732Z",
-    "merchantId": "M_AMAZONINDIA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Amazon India",
     "category": "Shopping",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_49",
-    "payment_method": "Debit Card"
+    "payment_method": "Credit Card",
+    "items": []
   },
   {
-    "id": "t18",
-    "amount": 2636,
-    "currency": "INR",
-    "timestamp": "2026-03-03T15:16:51.683Z",
-    "merchantId": "M_VIVEK",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vivek",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN92840871",
     "type": "Paid",
-    "referenceId": "TXN_GEN_19",
-    "payment_method": "UPI"
+    "amount": 1174,
+    "merchantName": "LIC Premium",
+    "timestamp": 1773892929020,
+    "status": "success",
+    "category": "Insurance",
+    "payment_method": "UPI",
+    "items": []
   },
   {
-    "id": "t46",
-    "amount": 512,
-    "currency": "INR",
-    "timestamp": "2026-03-03T14:12:35.863Z",
-    "merchantId": "M_SNEHA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Sneha",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN34856074",
     "type": "Received",
-    "referenceId": "TXN_GEN_47",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t62",
-    "amount": 734,
-    "currency": "INR",
-    "timestamp": "2026-03-03T00:12:34.045Z",
-    "merchantId": "M_D-MART",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "D-Mart",
-    "category": "Food & Grocery",
+    "amount": 280,
+    "merchantName": "Rahul Sharma",
+    "customerName": "Rahul Sharma",
+    "timestamp": 1773822405548,
     "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_63",
-    "payment_method": "Credit Card"
+    "category": "Transfer",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 1,
+        "price": 210
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 1,
+        "price": 14
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 3,
+        "price": 14
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 1,
+        "price": 14
+      }
+    ]
   },
   {
-    "id": "t57",
-    "amount": 3984,
-    "currency": "INR",
-    "timestamp": "2026-03-02T21:41:57.545Z",
-    "merchantId": "M_UBER",
-    "customerId": "u1",
-    "customerName": "User",
+    "id": "TXN47772443",
+    "type": "Received",
+    "amount": 1445,
+    "merchantName": "Siddharth",
+    "customerName": "Siddharth",
+    "timestamp": 1773804812946,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 2,
+        "price": 199
+      },
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 3,
+        "price": 199
+      },
+      {
+        "id": "6",
+        "name": "Dabur Honey 500g",
+        "qty": 3,
+        "price": 150
+      }
+    ]
+  },
+  {
+    "id": "TXN37879479",
+    "type": "Received",
+    "amount": 890,
+    "merchantName": "Rohan",
+    "customerName": "Rohan",
+    "timestamp": 1773795774733,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "7",
+        "name": "Amul Butter 500g",
+        "qty": 2,
+        "price": 250
+      },
+      {
+        "id": "8",
+        "name": "Brooke Bond Red Label",
+        "qty": 3,
+        "price": 130
+      }
+    ]
+  },
+  {
+    "id": "TXN15610059",
+    "type": "Received",
+    "amount": 1512,
+    "merchantName": "Rahul Sharma",
+    "customerName": "Rahul Sharma",
+    "timestamp": 1773738962925,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 1,
+        "price": 180
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 3,
+        "price": 14
+      },
+      {
+        "id": "7",
+        "name": "Amul Butter 500g",
+        "qty": 3,
+        "price": 250
+      },
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 3,
+        "price": 180
+      }
+    ]
+  },
+  {
+    "id": "TXN35078353",
+    "type": "Received",
+    "amount": 236,
+    "merchantName": "Siddharth",
+    "customerName": "Siddharth",
+    "timestamp": 1773732476732,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 1,
+        "price": 180
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 2,
+        "price": 28
+      }
+    ]
+  },
+  {
+    "id": "TXN70470362",
+    "type": "Received",
+    "amount": 2260,
+    "merchantName": "Suresh",
+    "customerName": "Suresh",
+    "timestamp": 1773693664691,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 3,
+        "price": 180
+      },
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 2,
+        "price": 250
+      },
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 2,
+        "price": 210
+      },
+      {
+        "id": "8",
+        "name": "Brooke Bond Red Label",
+        "qty": 2,
+        "price": 130
+      },
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 3,
+        "price": 180
+      }
+    ]
+  },
+  {
+    "id": "TXN04352399",
+    "type": "Paid",
+    "amount": 1643,
     "merchantName": "Uber",
-    "category": "Travel",
+    "timestamp": 1773670626306,
     "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_58",
-    "payment_method": "Net Banking"
+    "category": "Travel",
+    "payment_method": "Credit Card",
+    "items": []
   },
   {
-    "id": "t39",
-    "amount": 2710,
-    "currency": "INR",
-    "timestamp": "2026-03-02T21:06:17.721Z",
-    "merchantId": "M_SHREED",
-    "customerId": "u1",
-    "customerName": "User",
+    "id": "TXN85766761",
+    "type": "Paid",
+    "amount": 1215,
+    "merchantName": "Amazon",
+    "timestamp": 1773639828442,
+    "status": "success",
+    "category": "Shopping",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "B_373",
+        "name": "Shopping Bill",
+        "qty": 1,
+        "price": 1215
+      }
+    ]
+  },
+  {
+    "id": "TXN56378647",
+    "type": "Received",
+    "amount": 210,
+    "merchantName": "Vikash",
+    "customerName": "Vikash",
+    "timestamp": 1773590851834,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 1,
+        "price": 210
+      }
+    ]
+  },
+  {
+    "id": "TXN59547758",
+    "type": "Received",
+    "amount": 451,
+    "merchantName": "Neha",
+    "customerName": "Neha",
+    "timestamp": 1773442281635,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 1,
+        "price": 199
+      },
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 1,
+        "price": 210
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 3,
+        "price": 14
+      }
+    ]
+  },
+  {
+    "id": "TXN42549891",
+    "type": "Paid",
+    "amount": 1460,
+    "merchantName": "LIC Premium",
+    "timestamp": 1773250758397,
+    "status": "success",
+    "category": "Insurance",
+    "payment_method": "UPI",
+    "items": []
+  },
+  {
+    "id": "TXN96069450",
+    "type": "Paid",
+    "amount": 258,
+    "merchantName": "Myntra",
+    "timestamp": 1773161774046,
+    "status": "success",
+    "category": "Shopping",
+    "payment_method": "UPI",
+    "items": []
+  },
+  {
+    "id": "TXN17886285",
+    "type": "Paid",
+    "amount": 654,
+    "merchantName": "Zomato",
+    "timestamp": 1773015082903,
+    "status": "success",
+    "category": "Food & Grocery",
+    "payment_method": "UPI",
+    "items": []
+  },
+  {
+    "id": "TXN59979374",
+    "type": "Paid",
+    "amount": 1949,
+    "merchantName": "Amazon",
+    "timestamp": 1772957976428,
+    "status": "success",
+    "category": "Shopping",
+    "payment_method": "UPI",
+    "items": []
+  },
+  {
+    "id": "TXN19020570",
+    "type": "Received",
+    "amount": 241,
+    "merchantName": "Neha",
+    "customerName": "Neha",
+    "timestamp": 1772954701493,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 1,
+        "price": 199
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 3,
+        "price": 14
+      }
+    ]
+  },
+  {
+    "id": "TXN24346750",
+    "type": "Received",
+    "amount": 570,
+    "merchantName": "Siddharth",
+    "customerName": "Siddharth",
+    "timestamp": 1772867869224,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 2,
+        "price": 180
+      },
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 1,
+        "price": 210
+      }
+    ]
+  },
+  {
+    "id": "TXN13561456",
+    "type": "Paid",
+    "amount": 928,
+    "merchantName": "Airtel Postpaid",
+    "timestamp": 1772849145113,
+    "status": "success",
+    "category": "Recharges & Bill Payments",
+    "payment_method": "Debit Card",
+    "items": []
+  },
+  {
+    "id": "TXN61263666",
+    "type": "Received",
+    "amount": 362,
+    "merchantName": "Arun",
+    "customerName": "Arun",
+    "timestamp": 1772844831095,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 2,
+        "price": 14
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 3,
+        "price": 28
+      },
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 1,
+        "price": 250
+      }
+    ]
+  },
+  {
+    "id": "TXN15246170",
+    "type": "Paid",
+    "amount": 2688,
+    "merchantName": "MakeMyTrip",
+    "timestamp": 1772759430129,
+    "status": "success",
+    "category": "Travel",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "B_285",
+        "name": "Travel Bill",
+        "qty": 1,
+        "price": 2688
+      }
+    ]
+  },
+  {
+    "id": "TXN13451971",
+    "type": "Paid",
+    "amount": 2121,
+    "merchantName": "LIC Premium",
+    "timestamp": 1772723080034,
+    "status": "success",
+    "category": "Insurance",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "B_902",
+        "name": "Insurance Bill",
+        "qty": 1,
+        "price": 2121
+      }
+    ]
+  },
+  {
+    "id": "TXN88033042",
+    "type": "Received",
+    "amount": 1306,
+    "merchantName": "Priya",
+    "customerName": "Priya",
+    "timestamp": 1772711059455,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 3,
+        "price": 14
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 1,
+        "price": 14
+      },
+      {
+        "id": "7",
+        "name": "Amul Butter 500g",
+        "qty": 2,
+        "price": 250
+      },
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 2,
+        "price": 250
+      },
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 1,
+        "price": 250
+      }
+    ]
+  },
+  {
+    "id": "TXN49703811",
+    "type": "Paid",
+    "amount": 1600,
     "merchantName": "Shreed",
+    "timestamp": 1772673134219,
+    "status": "success",
     "category": "Transfer",
-    "status": "success",
+    "payment_method": "Credit Card",
+    "items": []
+  },
+  {
+    "id": "TXN77933735",
     "type": "Paid",
-    "referenceId": "TXN_GEN_40",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t40",
-    "amount": 3003,
-    "currency": "INR",
-    "timestamp": "2026-03-02T18:56:26.022Z",
-    "merchantId": "M_ARUN",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Arun",
-    "category": "Transfer",
+    "amount": 605,
+    "merchantName": "Myntra",
+    "timestamp": 1772651070521,
     "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_41",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t63",
-    "amount": 494,
-    "currency": "INR",
-    "timestamp": "2026-03-02T11:16:36.748Z",
-    "merchantId": "M_MAKEMYTRIP",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "MakeMyTrip",
-    "category": "Travel",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_64",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t35",
-    "amount": 1082,
-    "currency": "INR",
-    "timestamp": "2026-02-28T15:05:01.598Z",
-    "merchantId": "M_VIKRAMPATEL",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vikram Patel",
-    "category": "Transfer",
-    "status": "failed",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_36",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t50",
-    "amount": 4666,
-    "currency": "INR",
-    "timestamp": "2026-02-27T12:10:28.302Z",
-    "merchantId": "M_ROHAN",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Rohan",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_51",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t47",
-    "amount": 3869,
-    "currency": "INR",
-    "timestamp": "2026-02-26T19:25:40.911Z",
-    "merchantId": "M_NITESH",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Nitesh",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_48",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t11",
-    "amount": 2636,
-    "currency": "INR",
-    "timestamp": "2026-02-26T15:06:25.250Z",
-    "merchantId": "M_OYO",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Oyo",
-    "category": "Travel",
-    "status": "failed",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_12",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t23",
-    "amount": 1192,
-    "currency": "INR",
-    "timestamp": "2026-02-25T10:03:10.531Z",
-    "merchantId": "M_BOOKMYSHOW",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "BookMyShow",
-    "category": "Cashback",
-    "status": "success",
-    "type": "Cashback",
-    "referenceId": "TXN_GEN_24",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t64",
-    "amount": 3875,
-    "currency": "INR",
-    "timestamp": "2026-02-25T08:47:12.704Z",
-    "merchantId": "M_VIVEK",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Vivek",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Received",
-    "referenceId": "TXN_GEN_65",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t13",
-    "amount": 2857,
-    "currency": "INR",
-    "timestamp": "2026-02-23T15:02:00.166Z",
-    "merchantId": "M_ROHAN",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Rohan",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_14",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t37",
-    "amount": 2180,
-    "currency": "INR",
-    "timestamp": "2026-02-23T09:22:40.110Z",
-    "merchantId": "M_UBER",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Uber",
-    "category": "Travel",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_38",
-    "payment_method": "Credit Card"
-  },
-  {
-    "id": "t41",
-    "amount": 3922,
-    "currency": "INR",
-    "timestamp": "2026-02-23T03:07:19.795Z",
-    "merchantId": "M_MAKEMYTRIP",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "MakeMyTrip",
     "category": "Shopping",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_42",
-    "payment_method": "Credit Card"
+    "payment_method": "Credit Card",
+    "items": []
   },
   {
-    "id": "t52",
-    "amount": 4883,
-    "currency": "INR",
-    "timestamp": "2026-02-22T20:49:56.652Z",
-    "merchantId": "M_PRIYASINGH",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Priya Singh",
-    "category": "Transfer",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_53",
-    "payment_method": "Debit Card"
-  },
-  {
-    "id": "t20",
-    "amount": 2252,
-    "currency": "INR",
-    "timestamp": "2026-02-22T01:24:16.747Z",
-    "merchantId": "M_PAYTMCASHBACK",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Paytm Cashback",
-    "category": "Travel",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_21",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t30",
-    "amount": 3649,
-    "currency": "INR",
-    "timestamp": "2026-02-20T18:21:06.501Z",
-    "merchantId": "M_SWIGGY",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Swiggy",
-    "category": "Movies & Events",
-    "status": "success",
-    "type": "Paid",
-    "referenceId": "TXN_GEN_31",
-    "payment_method": "Wallet"
-  },
-  {
-    "id": "t34",
-    "amount": 4887,
-    "currency": "INR",
-    "timestamp": "2026-02-20T07:53:20.928Z",
-    "merchantId": "M_ARUN",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Arun",
-    "category": "Transfer",
-    "status": "success",
+    "id": "TXN20826240",
     "type": "Received",
-    "referenceId": "TXN_GEN_35",
-    "payment_method": "UPI"
-  },
-  {
-    "id": "t59",
-    "amount": 4548,
-    "currency": "INR",
-    "timestamp": "2026-02-19T21:32:38.684Z",
-    "merchantId": "M_BOOKMYSHOW",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "BookMyShow",
-    "category": "Cashback",
+    "amount": 1168,
+    "merchantName": "Siddharth",
+    "customerName": "Siddharth",
+    "timestamp": 1772633737012,
     "status": "success",
-    "type": "Cashback",
-    "referenceId": "TXN_GEN_60",
-    "payment_method": "Net Banking"
-  },
-  {
-    "id": "t31",
-    "amount": 1142,
-    "currency": "INR",
-    "timestamp": "2026-02-19T10:44:27.305Z",
-    "merchantId": "M_POOJA",
-    "customerId": "u1",
-    "customerName": "User",
-    "merchantName": "Pooja",
     "category": "Transfer",
-    "status": "success",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 1,
+        "price": 180
+      },
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 3,
+        "price": 250
+      },
+      {
+        "id": "4",
+        "name": "Maggi 2-Minute Noodles",
+        "qty": 2,
+        "price": 14
+      },
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 1,
+        "price": 210
+      }
+    ]
+  },
+  {
+    "id": "TXN85227218",
     "type": "Paid",
-    "referenceId": "TXN_GEN_32",
-    "payment_method": "Net Banking"
+    "amount": 803,
+    "merchantName": "Amazon",
+    "timestamp": 1772404152044,
+    "status": "success",
+    "category": "Shopping",
+    "payment_method": "UPI",
+    "items": []
+  },
+  {
+    "id": "TXN94240730",
+    "type": "Received",
+    "amount": 1154,
+    "merchantName": "Rohan",
+    "customerName": "Rohan",
+    "timestamp": 1772324814173,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 2,
+        "price": 180
+      },
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 2,
+        "price": 250
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 2,
+        "price": 28
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 1,
+        "price": 28
+      },
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 1,
+        "price": 210
+      }
+    ]
+  },
+  {
+    "id": "TXN41708505",
+    "type": "Received",
+    "amount": 990,
+    "merchantName": "Neha",
+    "customerName": "Neha",
+    "timestamp": 1772313129386,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "2",
+        "name": "Fortune Sunlite Oil 1L",
+        "qty": 2,
+        "price": 180
+      },
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 3,
+        "price": 210
+      }
+    ]
+  },
+  {
+    "id": "TXN84822852",
+    "type": "Paid",
+    "amount": 929,
+    "merchantName": "Zomato",
+    "timestamp": 1772309216548,
+    "status": "success",
+    "category": "Food & Grocery",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "B_720",
+        "name": "Food & Grocery Bill",
+        "qty": 1,
+        "price": 929
+      }
+    ]
+  },
+  {
+    "id": "TXN02237295",
+    "type": "Paid",
+    "amount": 2346,
+    "merchantName": "Airtel Postpaid",
+    "timestamp": 1772300926621,
+    "status": "success",
+    "category": "Recharges & Bill Payments",
+    "payment_method": "UPI",
+    "items": []
+  },
+  {
+    "id": "TXN30033438",
+    "type": "Received",
+    "amount": 84,
+    "merchantName": "Neha",
+    "customerName": "Neha",
+    "timestamp": 1772288608682,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 1,
+        "price": 28
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 2,
+        "price": 28
+      }
+    ]
+  },
+  {
+    "id": "TXN35216004",
+    "type": "Paid",
+    "amount": 2229,
+    "merchantName": "Swiggy",
+    "timestamp": 1772224571682,
+    "status": "success",
+    "category": "Food & Grocery",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "B_428",
+        "name": "Food & Grocery Bill",
+        "qty": 1,
+        "price": 2229
+      }
+    ]
+  },
+  {
+    "id": "TXN53977072",
+    "type": "Paid",
+    "amount": 758,
+    "merchantName": "Jio Pre-Paid",
+    "timestamp": 1772093169487,
+    "status": "success",
+    "category": "Recharges & Bill Payments",
+    "payment_method": "Debit Card",
+    "items": []
+  },
+  {
+    "id": "TXN27403418",
+    "type": "Paid",
+    "amount": 2487,
+    "merchantName": "MakeMyTrip",
+    "timestamp": 1772088085820,
+    "status": "success",
+    "category": "Travel",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "B_868",
+        "name": "Travel Bill",
+        "qty": 1,
+        "price": 2487
+      }
+    ]
+  },
+  {
+    "id": "TXN69665793",
+    "type": "Paid",
+    "amount": 1352,
+    "merchantName": "Swiggy",
+    "timestamp": 1772086589701,
+    "status": "success",
+    "category": "Food & Grocery",
+    "payment_method": "Debit Card",
+    "items": []
+  },
+  {
+    "id": "TXN93891976",
+    "type": "Paid",
+    "amount": 3060,
+    "merchantName": "Flipkart",
+    "timestamp": 1772069855918,
+    "status": "success",
+    "category": "Shopping",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "B_920",
+        "name": "Shopping Bill",
+        "qty": 1,
+        "price": 3060
+      }
+    ]
+  },
+  {
+    "id": "TXN69814731",
+    "type": "Paid",
+    "amount": 2079,
+    "merchantName": "Swiggy",
+    "timestamp": 1771988785432,
+    "status": "success",
+    "category": "Food & Grocery",
+    "payment_method": "Credit Card",
+    "items": []
+  },
+  {
+    "id": "TXN82570725",
+    "type": "Received",
+    "amount": 150,
+    "merchantName": "Rohan",
+    "customerName": "Rohan",
+    "timestamp": 1771878403086,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "6",
+        "name": "Dabur Honey 500g",
+        "qty": 1,
+        "price": 150
+      }
+    ]
+  },
+  {
+    "id": "TXN90968840",
+    "type": "Paid",
+    "amount": 1867,
+    "merchantName": "Shreed",
+    "timestamp": 1771850137893,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Debit Card",
+    "items": [
+      {
+        "id": "B_266",
+        "name": "Transfer Bill",
+        "qty": 1,
+        "price": 1867
+      }
+    ]
+  },
+  {
+    "id": "TXN92001295",
+    "type": "Paid",
+    "amount": 1515,
+    "merchantName": "Airtel Postpaid",
+    "timestamp": 1771815767013,
+    "status": "success",
+    "category": "Recharges & Bill Payments",
+    "payment_method": "Credit Card",
+    "items": []
+  },
+  {
+    "id": "TXN01309738",
+    "type": "Paid",
+    "amount": 2530,
+    "merchantName": "Airtel Postpaid",
+    "timestamp": 1771804239562,
+    "status": "success",
+    "category": "Recharges & Bill Payments",
+    "payment_method": "Credit Card",
+    "items": []
+  },
+  {
+    "id": "TXN93580426",
+    "type": "Received",
+    "amount": 449,
+    "merchantName": "Priya",
+    "customerName": "Priya",
+    "timestamp": 1771630141362,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "Credit Card",
+    "items": [
+      {
+        "id": "1",
+        "name": "Aashirvaad Atta 5kg",
+        "qty": 1,
+        "price": 250
+      },
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 1,
+        "price": 199
+      }
+    ]
+  },
+  {
+    "id": "TXN92828441",
+    "type": "Received",
+    "amount": 1453,
+    "merchantName": "Suresh",
+    "customerName": "Suresh",
+    "timestamp": 1771532804514,
+    "status": "success",
+    "category": "Transfer",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "5",
+        "name": "Surf Excel Matic 1kg",
+        "qty": 2,
+        "price": 210
+      },
+      {
+        "id": "7",
+        "name": "Amul Butter 500g",
+        "qty": 3,
+        "price": 250
+      },
+      {
+        "id": "9",
+        "name": "Axe Deodorant",
+        "qty": 1,
+        "price": 199
+      },
+      {
+        "id": "3",
+        "name": "Tata Salt 1kg",
+        "qty": 3,
+        "price": 28
+      }
+    ]
+  },
+  {
+    "id": "TXN04853620",
+    "type": "Paid",
+    "amount": 143,
+    "merchantName": "MakeMyTrip",
+    "timestamp": 1771523068108,
+    "status": "failed",
+    "category": "Travel",
+    "payment_method": "UPI",
+    "items": [
+      {
+        "id": "B_607",
+        "name": "Travel Bill",
+        "qty": 1,
+        "price": 143
+      }
+    ]
+  }
+];
+
+export const kiranaInventory: any[] = [
+  {
+    "id": "1",
+    "name": "Aashirvaad Atta 5kg",
+    "category": "Staples",
+    "price": 250,
+    "stock": 45,
+    "unit": "kg",
+    "status": "In Stock"
+  },
+  {
+    "id": "2",
+    "name": "Fortune Sunlite Oil 1L",
+    "category": "Staples",
+    "price": 180,
+    "stock": 30,
+    "unit": "L",
+    "status": "In Stock"
+  },
+  {
+    "id": "3",
+    "name": "Tata Salt 1kg",
+    "category": "Staples",
+    "price": 28,
+    "stock": 100,
+    "unit": "kg",
+    "status": "In Stock"
+  },
+  {
+    "id": "4",
+    "name": "Maggi 2-Minute Noodles",
+    "category": "Snacks",
+    "price": 14,
+    "stock": 150,
+    "unit": "pack",
+    "status": "In Stock"
+  },
+  {
+    "id": "5",
+    "name": "Surf Excel Matic 1kg",
+    "category": "Cleaning",
+    "price": 210,
+    "stock": 25,
+    "unit": "kg",
+    "status": "In Stock"
+  },
+  {
+    "id": "6",
+    "name": "Dabur Honey 500g",
+    "category": "Staples",
+    "price": 150,
+    "stock": 4,
+    "unit": "jar",
+    "status": "Low Stock"
+  },
+  {
+    "id": "7",
+    "name": "Amul Butter 500g",
+    "category": "Dairy",
+    "price": 250,
+    "stock": 0,
+    "unit": "pack",
+    "status": "Out of Stock"
+  },
+  {
+    "id": "8",
+    "name": "Brooke Bond Red Label",
+    "category": "Beverages",
+    "price": 130,
+    "stock": 8,
+    "unit": "pack",
+    "status": "Low Stock"
+  },
+  {
+    "id": "9",
+    "name": "Axe Deodorant",
+    "category": "Personal Care",
+    "price": 199,
+    "stock": 12,
+    "unit": "bottle",
+    "status": "In Stock"
   }
 ];

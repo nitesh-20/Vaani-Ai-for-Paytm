@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { motion } from "motion/react";
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   IndianRupee,
   ArrowUpRight,
@@ -12,6 +12,8 @@ import {
   CreditCard,
   Building2,
   Store,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { Transaction } from "../types";
 import { cn } from "../lib/utils";
@@ -87,6 +89,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
   }, [transactions]);
 
   const [expandedTxs, setExpandedTxs] = React.useState(false);
+  const [expandedRowId, setExpandedRowId] = React.useState<string | null>(null);
 
   const recentTransactions = [...transactions]
     .sort(
@@ -390,60 +393,85 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
           </div>
             <div className={cn("divide-y divide-gray-50", expandedTxs && "max-h-[600px] overflow-y-auto")}>
             {recentTransactions.map((t) => (
-              <div
-                key={t.id}
-                className="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors "
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={cn(
-                      "p-3 rounded-2xl",
-                      t.type === "Received"
-                        ? "bg-green-50 text-green-600"
-                        : t.status === "failed"
-                          ? "bg-red-50 text-red-600"
-                          : "bg-blue-50 text-blue-600",
-                    )}
-                  >
-                    {getCategoryIcon(t.category)}
+              <div key={t.id} className="flex flex-col border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                <div
+                  className="p-5 flex items-center justify-between cursor-pointer"
+                  onClick={() => setExpandedRowId(expandedRowId === t.id ? null : t.id)}
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={cn(
+                        "p-3 rounded-2xl",
+                        t.type === "Received"
+                          ? "bg-green-50 text-green-600"
+                          : t.status === "failed"
+                            ? "bg-red-50 text-red-600"
+                            : "bg-blue-50 text-blue-600",
+                      )}
+                    >
+                      {getCategoryIcon(t.category)}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        {t.merchantName || t.customerName}
+                        {t.items && t.items.length > 0 && (
+                           expandedRowId === t.id ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />
+                        )}
+                      </h4>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {new Date(t.timestamp).toLocaleDateString()} at{" "}
+                        {new Date(t.timestamp).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        • {t.payment_method || "UPI"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-900">
-                      {t.merchantName || t.customerName}
-                    </h4>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {new Date(t.timestamp).toLocaleDateString()} at{" "}
-                      {new Date(t.timestamp).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}{" "}
-                      • {t.payment_method || "UPI"}
+                  <div className="text-right">
+                    <p
+                      className={cn(
+                        "text-sm font-bold",
+                        t.type === "Received" || t.type === "Cashback"
+                          ? "text-green-600"
+                          : "text-gray-900",
+                      )}
+                    >
+                      {t.type === "Received" || t.type === "Cashback" ? "+" : "-"}
+                      ₹{t.amount.toLocaleString("en-IN")}
                     </p>
+                    {t.status === "failed" && (
+                      <p className="text-[10px] font-bold text-red-600 mt-1 uppercase tracking-wider">
+                        FAILED
+                      </p>
+                    )}
+                    {t.status === "success" && (
+                      <p className="text-[10px] font-bold text-green-600 mt-1 uppercase tracking-wider">
+                        SUCCESS
+                      </p>
+                    )}
                   </div>
                 </div>
-                <div className="text-right">
-                  <p
-                    className={cn(
-                      "text-sm font-bold",
-                      t.type === "Received" || t.type === "Cashback"
-                        ? "text-green-600"
-                        : "text-gray-900",
-                    )}
-                  >
-                    {t.type === "Received" || t.type === "Cashback" ? "+" : "-"}
-                    ₹{t.amount.toLocaleString("en-IN")}
-                  </p>
-                  {t.status === "failed" && (
-                    <p className="text-[10px] font-bold text-red-600 mt-1 uppercase tracking-wider">
-                      FAILED
-                    </p>
+
+                <AnimatePresence>
+                  {expandedRowId === t.id && t.items && t.items.length > 0 && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden bg-gray-50/50"
+                    >
+                      <div className="px-5 pb-5 pl-[72px] space-y-2">
+                        {t.items.map((item: any, idx: number) => (
+                          <div key={idx} className="flex justify-between items-center text-sm">
+                            <span className="text-gray-600">{item.name} <span className="text-gray-400 ml-1">x{item.qty}</span></span>
+                            <span className="font-medium text-gray-900">₹{item.price * item.qty}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
                   )}
-                  {t.status === "success" && (
-                    <p className="text-[10px] font-bold text-green-600 mt-1 uppercase tracking-wider">
-                      SUCCESS
-                    </p>
-                  )}
-                </div>
+                </AnimatePresence>
               </div>
             ))}
           </div>

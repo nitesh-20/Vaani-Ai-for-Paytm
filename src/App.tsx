@@ -26,6 +26,7 @@ import { cn } from './lib/utils';
 import VoiceAgent from './components/VoiceAgent';
 import TransactionManager from './components/TransactionManager';
 import Dashboard from './components/Dashboard';
+import { Inventory } from './components/Inventory';
 import { seedOneMonthData } from './services/seed';
 import { handleFirestoreError, OperationType } from './utils/errorHandling';
 import { 
@@ -61,7 +62,7 @@ const App: React.FC = () => {
   const [isSeeding, setIsSeeding] = useState(false);
   const [seedSuccess, setSeedSuccess] = useState(false);
   const [autoAnnounce, setAutoAnnounce] = useState(false);
-  const [activeView, setActiveView] = useState<'chat' | 'transactions' | 'dashboard'>('chat');
+  const [activeView, setActiveView] = useState<'chat' | 'transactions' | 'dashboard' | 'inventory'>('dashboard');
 
   useEffect(() => {
     // Auth is disabled as per request
@@ -230,25 +231,18 @@ const App: React.FC = () => {
               <Zap className={`w-4 h-4 ${activeView === 'chat' ? 'fill-[#1967d2]' : ''}`} />
               Vaani AI
             </button>
+            <button 
+              onClick={() => setActiveView('inventory')}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all ${
+                activeView === 'inventory' ? 'bg-[#e8f0fe] text-[#1967d2] font-medium' : 'hover:bg-[#e1e5ea] text-[#444746]'
+              }`}
+            >
+              <Store className={`w-4 h-4 ${activeView === 'inventory' ? 'text-[#1967d2]' : ''}`} />
+              Inventory
+            </button>
           </div>
 
           <div className="mt-auto pt-4 border-t border-[#d2d7dd] space-y-1">
-            <button 
-              onClick={handleSeedData}
-              disabled={isSeeding}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all active:scale-95 ${
-                seedSuccess ? 'bg-emerald-50 text-emerald-600' : 'hover:bg-[#e1e5ea] text-[#444746]'
-              }`}
-            >
-              {isSeeding ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : seedSuccess ? (
-                <CheckCircle2 className="w-4 h-4" />
-              ) : (
-                <Database className="w-4 h-4" />
-              )}
-              {seedSuccess ? "Data Seeded!" : "Seed Demo Data"}
-            </button>
             <div 
               onClick={() => setAutoAnnounce(!autoAnnounce)}
               className={`flex items-center gap-3 px-4 py-2.5 rounded-full text-sm cursor-pointer transition-all active:scale-95 ${
@@ -317,6 +311,15 @@ const App: React.FC = () => {
           >
             Vaani
           </button>
+          <button 
+            onClick={() => setActiveView('inventory')}
+            className={cn(
+              "px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all",
+              activeView === 'inventory' ? "bg-white text-zinc-900 shadow-sm" : "text-[#444746] hover:text-zinc-900"
+            )}
+          >
+            Inventory
+          </button>
           </div>
 
         {/* Dynamic Content Area */}
@@ -346,6 +349,17 @@ const App: React.FC = () => {
                   className="w-full"
                 >
                   <Dashboard transactions={transactions} onSetView={setActiveView} />
+                </motion.div>
+              )}
+              {activeView === 'inventory' && (
+                <motion.div 
+                  key="inventory"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="w-full"
+                >
+                  <Inventory />
                 </motion.div>
               )}
             </AnimatePresence>
