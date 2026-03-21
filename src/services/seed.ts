@@ -46,4 +46,5 @@ export const seedOneMonthData = async (userId: string, role: 'merchant' | 'custo
   
   await batch.commit();
   console.log("Successfully seeded dynamic demo transactions.");
+  
 };
