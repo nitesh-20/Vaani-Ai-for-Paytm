@@ -322,7 +322,7 @@ export const createLiveSession = (userId: string, role: 'merchant' | 'customer',
       const recentTxs = mockTransactions.slice(0, 50).map(t => {
         const party = t.merchantName && t.merchantName !== 'User' ? t.merchantName : (t.customerName || 'Unknown');
         const timeStr = new Date(t.timestamp).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
-        const itemsStr = t.items && t.items.length > 0 ? ` [Items: ${t.items.map(i => `${i.name} x${i.quantity}`).join(', ')}]` : '';
+        const itemsStr = t.items && t.items.length > 0 ? ` [Items: ${t.items.map((i: any) => `${i.name} x${i.qty}`).join(', ')}]` : '';
         return `- ${t.type === 'Received' ? 'Received from' : 'Paid to'} ${party}, Amount: ₹${t.amount}, Status: ${t.status}, Category: ${t.category || 'None'}, Time: ${timeStr}${itemsStr}`;
       }).join('\\n    ');
       
