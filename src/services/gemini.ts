@@ -2,6 +2,7 @@ import { GoogleGenAI, Modality, LiveServerMessage, Type } from "@google/genai";
 import { collection, query, where, getDocs, orderBy, limit, Timestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Transaction } from "../types";
+import { mockTransactions } from "../mockData";
 
 const getAI = () => {
   const apiKey = (process.env as any).API_KEY || process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
@@ -11,28 +12,17 @@ const getAI = () => {
   return new GoogleGenAI({ apiKey: apiKey || '' });
 };
 
-export const getTransactions = async (userId: string, role: 'merchant' | 'customer', days: number = 1) => {
-  const transactionsRef = collection(db, "transactions");
-  const field = role === 'merchant' ? 'merchantId' : 'customerId';
-  
+export const getTransactions = async (userId: string, role: 'merchant' | 'customer', days: number = 1): Promise<Transaction[]> => {
   const now = new Date();
-  const startTime = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  const startTime = new Date(now.getTime() - days * 24 * 60 * 60 * 1000).toISOString();
   
-  const q = query(
-    transactionsRef,
-    where(field, "==", userId),
-    where("timestamp", ">=", startTime.toISOString()),
-    orderBy("timestamp", "desc"),
-    limit(20)
-  );
-  
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transaction));
+  return mockTransactions.filter((t: Transaction) => t.timestamp >= startTime).sort((a: Transaction, b: Transaction) => b.timestamp.localeCompare(a.timestamp)).slice(0, 20);
 };
 
 export const getSummary = async (userId: string, role: 'merchant' | 'customer', period: 'today' | 'week' | 'month' = 'today') => {
-  const transactions = await getTransactions(userId, role, period === 'today' ? 1 : period === 'week' ? 7 : 30);
-  const total = transactions.reduce((sum, t) => sum + (t.status === 'success' ? t.amount : 0), 0);
+  const days = period === 'today' ? 1 : period === 'week' ? 7 : 30;
+  const transactions = await getTransactions(userId, role, days);
+  const total = transactions.reduce((sum: number, t: Transaction) => sum + (t.status === 'success' ? t.amount : 0), 0);
   return {
     total,
     count: transactions.length,
@@ -40,22 +30,14 @@ export const getSummary = async (userId: string, role: 'merchant' | 'customer', 
   };
 };
 
-export const verifyPayment = async (userId: string, amount: number, timeWindowMinutes: number = 10) => {
-  const transactionsRef = collection(db, "transactions");
-  const now = new Date();
-  const startTime = new Date(now.getTime() - timeWindowMinutes * 60 * 1000);
+export const verifyPayment = async (userId: string, amount: number, timeWindowMinutes: number = 10): Promise<Transaction[]> => {
+  const startTime = new Date(new Date().getTime() - timeWindowMinutes * 60 * 1000).toISOString();
   
-  const q = query(
-    transactionsRef,
-    where("merchantId", "==", userId),
-    where("amount", "==", amount),
-    where("timestamp", ">=", startTime.toISOString()),
-    where("status", "==", "success"),
-    orderBy("timestamp", "desc")
-  );
-  
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transaction));
+  return mockTransactions.filter((t: Transaction) => 
+    t.amount === amount && 
+    t.timestamp >= startTime && 
+    t.status === 'success'
+  ).sort((a: Transaction,b: Transaction) => b.timestamp.localeCompare(a.timestamp));
 };
 
 export const queryTransactions = async (
@@ -71,50 +53,24 @@ export const queryTransactions = async (
     status?: 'success' | 'failed' | 'pending';
     referenceId?: string;
   }
-) => {
-  const transactionsRef = collection(db, "transactions");
-  const field = role === 'merchant' ? 'merchantId' : 'customerId';
-  
-  let q = query(
-    transactionsRef,
-    where(field, "==", userId),
-    orderBy("timestamp", "desc")
-  );
+): Promise<Transaction[]> => {
+  let result = [...mockTransactions];
 
-  if (filters.startDate) {
-    q = query(q, where("timestamp", ">=", filters.startDate));
-  } else if (filters.days) {
-    const now = new Date();
-    const startTime = new Date(now.getTime() - filters.days * 24 * 60 * 60 * 1000);
-    q = query(q, where("timestamp", ">=", startTime.toISOString()));
-  }
+  if (filters.category) result = result.filter((t: Transaction) => t.category === filters.category);
+  if (filters.status) result = result.filter((t: Transaction) => t.status === filters.status);
+  if (filters.referenceId) result = result.filter((t: Transaction) => t.referenceId === filters.referenceId);
+  if (filters.minAmount !== undefined) result = result.filter((t: Transaction) => t.amount >= filters.minAmount!);
+  if (filters.maxAmount !== undefined) result = result.filter((t: Transaction) => t.amount <= filters.maxAmount!);
 
-  if (filters.endDate) {
-    q = query(q, where("timestamp", "<=", filters.endDate));
-  }
-
-  if (filters.status) {
-    q = query(q, where("status", "==", filters.status));
-  }
-
-  if (filters.referenceId) {
-    q = query(q, where("referenceId", "==", filters.referenceId));
+  let startT = filters.startDate;
+  if (filters.days) {
+    startT = new Date(new Date().getTime() - filters.days * 24 * 60 * 60 * 1000).toISOString();
   }
   
-  const querySnapshot = await getDocs(q);
-  let results = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Transaction));
-  
-  if (filters.category) {
-    results = results.filter(t => t.category.toLowerCase() === filters.category!.toLowerCase());
-  }
-  if (filters.minAmount !== undefined) {
-    results = results.filter(t => t.amount >= filters.minAmount!);
-  }
-  if (filters.maxAmount !== undefined) {
-    results = results.filter(t => t.amount <= filters.maxAmount!);
-  }
-  
-  return results.slice(0, 50);
+  if (startT) result = result.filter((t: Transaction) => t.timestamp >= startT!);
+  if (filters.endDate) result = result.filter((t: Transaction) => t.timestamp <= filters.endDate!);
+
+  return result.sort((a: Transaction,b: Transaction) => b.timestamp.localeCompare(a.timestamp));
 };
 
 export const categorizeTransaction = async (transactionId: string, category: string) => {
