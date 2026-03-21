@@ -98,7 +98,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
     )
     .slice(0, expandedTxs ? transactions.length : 5);
 
-  const getCategoryIcon = (category: string) => {
+  const getCategoryIcon = (category: string, type?: string) => {
     switch (category) {
       case "Food & Grocery":
         return <Utensils className="w-5 h-5" />;
@@ -115,7 +115,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
       case "Paytm Gold":
         return <Building2 className="w-5 h-5" />;
       case "Transfer":
-        return <ArrowUpRight className="w-5 h-5" />;
+        return type === "Received" ? <ArrowDownLeft className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />;
       default:
         return <CreditCard className="w-5 h-5" />;
     }
@@ -215,7 +215,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
                 </h2>
               </div>
               <div className="bg-red-50 p-2.5 rounded-2xl text-red-600">
-                <ArrowDownLeft className="w-5 h-5" />
+                <ArrowUpRight className="w-5 h-5" />
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-6">
@@ -240,7 +240,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
                 </h2>
               </div>
               <div className="bg-green-50 p-2.5 rounded-2xl text-green-600">
-                <ArrowUpRight className="w-5 h-5" />
+                <ArrowDownLeft className="w-5 h-5" />
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-6">
@@ -409,7 +409,7 @@ export default function Dashboard({ transactions, onSetView }: DashboardProps) {
                             : "bg-blue-50 text-blue-600",
                       )}
                     >
-                      {getCategoryIcon(t.category)}
+                      {getCategoryIcon(t.category, t.type)}
                     </div>
                     <div>
                       <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
